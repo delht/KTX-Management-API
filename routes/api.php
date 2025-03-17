@@ -1,14 +1,21 @@
 <?php
 
 use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\ContractServiceController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentDetailController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    return response()->json(['message' => 'API Laravel 12 đang hoạt động!']);
+    return response()->json(['message' => 'HELLOWORLD!!!']);
 });
 
-Route::apiResource('buildings', BuildingController::class); //LỆNH NÀY TƯƠNG ĐƯƠNG 5 LỆNH Ở DƯỚI, ÉO CẦN SỬA. THANH KIU
+
 
 //==========================================================================
 // Route::get('buildings', [BuildingController::class, 'index']);
@@ -17,3 +24,19 @@ Route::apiResource('buildings', BuildingController::class); //LỆNH NÀY TƯƠN
 // Route::put('buildings/{id}', [BuildingController::class, 'update']);
 // Route::delete('buildings/{id}', [BuildingController::class, 'destroy']);
 //==========================================================================
+
+Route::apiResource('buildings', BuildingController::class); //LỆNH NÀY TƯƠNG ĐƯƠNG 5 LỆNH Ở TRÊN, ÉO CẦN SỬA. THANH KIU
+
+Route::apiResource('contracts', ContractController::class);
+
+Route::apiResource('contract-service', ContractServiceController::class);
+
+Route::apiResource('payments', PaymentController::class);
+
+Route::apiResource('payment-details', PaymentDetailController::class);
+
+Route::apiResource('rooms', RoomController::class);
+
+Route::apiResource('services', ServiceController::class);
+
+Route::apiResource('users', UserController::class);
