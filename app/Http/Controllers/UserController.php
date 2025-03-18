@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -15,19 +16,29 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:50|unique:Users,name',
+    {   
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
             'email' => 'nullable|email|max:100|unique:Users,email',
             'password' => 'required|string|min:6',
             'phone' => 'required|string|max:15',
             'role' => 'sometimes|in:User,Admin',
+        ], [
+            'email.unique' => 'Email này đã được sử dụng. Vui lòng chọn email khác!',
+            'email.email' => 'Email không hợp lệ!',
         ]);
-
+        
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Dữ liệu không hợp lệ!',
+                'errors' => $validator->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        
+        $validatedData = $validator->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
-
         $user = User::create($validatedData);
-
+        
         return response()->json($user, Response::HTTP_CREATED);
     }
 
@@ -79,4 +90,7 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Xóa người dùng thành công'], Response::HTTP_OK);
     }
+
+    
+
 }

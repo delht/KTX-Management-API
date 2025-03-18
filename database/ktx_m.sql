@@ -4,7 +4,7 @@ USE ktx_m;
 CREATE TABLE Users
 ( 
     id_users int AUTO_INCREMENT PRIMARY KEY,
-    name varchar(50) UNIQUE NOT NULL,
+    name varchar(50) NOT NULL,
     email varchar(100) UNIQUE,
     password varchar(255) NOT NULL,
     phone varchar(15) NOT NULL,
@@ -126,3 +126,5 @@ INSERT INTO Payment_details (id_payments, typePay, amountPay) VALUES
 (2, 'momo', 4800000.00),
 (3, 'tai khoan ngan hang', 7200000.00);
 
+
+-- ALTER TABLE Users DROP INDEX name;

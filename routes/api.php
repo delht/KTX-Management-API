@@ -11,6 +11,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthController;
+
+
 Route::get('/test', function () {
     return response()->json(['message' => 'HELLOWORLD!!!']);
 });
@@ -40,3 +43,12 @@ Route::apiResource('rooms', RoomController::class);
 Route::apiResource('services', ServiceController::class);
 
 Route::apiResource('users', UserController::class);
+
+// ===========================================================================================================
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/get-token-user', [AuthController::class, 'userInfo']);
+});
