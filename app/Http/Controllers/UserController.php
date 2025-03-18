@@ -8,6 +8,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class UserController extends Controller
 {
     public function index()
@@ -91,6 +94,22 @@ class UserController extends Controller
         return response()->json(['message' => 'Xóa người dùng thành công'], Response::HTTP_OK);
     }
 
-    
+    // ========================================================================
+
+
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(new UsersImport, $request->file('file'));
+
+        return response()->json([
+            'message' => 'Thêm thành công'
+        ], Response::HTTP_OK);
+    }
+
 
 }

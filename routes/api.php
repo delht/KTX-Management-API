@@ -52,3 +52,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-token-user', [AuthController::class, 'userInfo']);
 });
+
+Route::post('/users/import', [UserController::class, 'import']);
