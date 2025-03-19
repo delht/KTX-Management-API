@@ -5,3 +5,6 @@ Lấy full buildings: curl.exe -X GET http://127.0.0.1:8000/api/buildings
 
 composer require laravel/sanctum
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+
+composer require maatwebsite/excel
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"

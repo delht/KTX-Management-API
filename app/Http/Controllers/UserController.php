@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 
+use Illuminate\Support\Facades\DB;
+
 class UserController extends Controller
 {
     public function index()
@@ -96,8 +98,6 @@ class UserController extends Controller
 
     // ========================================================================
 
-
-
     public function import(Request $request)
     {
         $request->validate([
@@ -111,5 +111,30 @@ class UserController extends Controller
         ], Response::HTTP_OK);
     }
 
+    // =============================================================================
 
+    public function searchUser(Request $request)
+    {
+        $input = trim($request->input('gt')); // Lấy giá trị nhập vào từ param `q`
+        
+        if (!$input) {
+            return response()->json(['error' => 'Vui lòng nhập từ khóa tìm kiếm'], 400);
+        }
+
+        $query = DB::table('Users')
+            ->where('id_users', $input)
+            ->orWhere('name', 'LIKE', '%' . $input . '%');
+
+        $users = $query->select('id_users', 'name', 'email', 'phone', 'role')->get();
+
+        if ($users->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy sinh viên'], 404);
+        }
+
+        return response()->json($users);
+    }
+
+
+
+    
 }

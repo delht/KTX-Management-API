@@ -18,8 +18,6 @@ Route::get('/test', function () {
     return response()->json(['message' => 'HELLOWORLD!!!']);
 });
 
-
-
 //==========================================================================
 // Route::get('buildings', [BuildingController::class, 'index']);
 // Route::post('buildings', [BuildingController::class, 'store']);
@@ -44,7 +42,7 @@ Route::apiResource('services', ServiceController::class);
 
 Route::apiResource('users', UserController::class);
 
-// ===========================================================================================================
+// ============================================================================ Đăng nhập, tạo tài khoản
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -54,3 +52,15 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/users/import', [UserController::class, 'import']);
+
+// ===================================================================================
+
+Route::get('/room/{id}/sl-users', [RoomController::class, 'getOccupants']);
+Route::get('/room/{id}/users', [RoomController::class, 'getUsersInRoom']);
+
+// =================================================================================== Tìm kiếm
+
+Route::get('/user/search', [UserController::class, 'searchUser']);
+Route::get('/room/search', [RoomController::class, 'searchRoom']);
+
+// ===================================================================================
