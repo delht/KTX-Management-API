@@ -141,11 +141,32 @@ class UserController extends Controller
         $rooms = DB::table('Users')
             ->join('contracts', 'Users.id_users', '=', 'Contracts.id_users')
             ->join('Rooms', 'Contracts.id_rooms', '=', 'Rooms.id_rooms')
+            ->leftJoin('Change_Rooms', 'Contracts.id_contracts', '=', 'Change_Rooms.id_contracts')
+            ->leftJoin('Rooms as old_room', 'Change_Rooms.old_room_id', '=', 'old_room.id_rooms')
+            ->leftJoin('Rooms as new_room', 'Change_Rooms.new_room_id', '=', 'new_room.id_rooms')
             ->where('Users.id_users', $id_users)
-            ->select('Users.name', 'Rooms.number', 'Rooms.type', 'Rooms.price')
+            ->select(
+                'Users.name',
+                'Rooms.number as current_room_number',
+                'Rooms.type',
+                'Rooms.price',
+                'Contracts.start_date',
+                'Contracts.end_date',
+                'old_room.number as phong_cu',
+                'new_room.number as phong_moi',
+                'Change_Rooms.reason',
+                'Change_Rooms.status'
+
+            )
             ->get();
+
+        if ($rooms->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy thông tin phòng'], 404);
+        }
+
         return response()->json($rooms);
     }
+
 
 
 

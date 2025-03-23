@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentDetailController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChangeRoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,8 @@ Route::apiResource('rooms', RoomController::class);
 Route::apiResource('services', ServiceController::class);
 
 Route::apiResource('users', UserController::class);
+
+Route::apiResource('changerooms', ChangeRoomController::class);
 
 // ============================================================================ Đăng nhập, tạo tài khoản
 
