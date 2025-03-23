@@ -63,4 +63,13 @@ Route::get('/room/{id}/users', [RoomController::class, 'getUsersInRoom']);
 Route::get('/user/search', [UserController::class, 'searchUser']);
 Route::get('/room/search', [RoomController::class, 'searchRoom']);
 
-// ===================================================================================
+// =================================================================================== Lấy số lượng phòng trống
+Route::get('/rooms/summary/{id_buildings}', [RoomController::class, 'getRoomSummaryByLocation']);
+// =================================================================================== Lấy thông tin dịch vụ theo phòng
+Route::get('/rooms/service/{id_rooms}', [RoomController::class, 'getServicesInRoom']);
+// =================================================================================== Lấy thông tin người dùng đã thuê
+Route::get('/users/{id_users}/rooms', [UserController::class, 'getRoom']);
+
+
+
+

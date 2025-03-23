@@ -18,6 +18,8 @@ class Building extends Model
     //trong dtb dex có nên bỏ đi, ko thì lỗi lòi lon
 
     protected $fillable = [
-        'nameBuild', 'location' // Không cần id_buildings vì nó tự tăng
+        'nameBuild',
+        'location',
+        'totalRooms'// Không cần id_buildings vì nó tự tăng
     ];
 }
