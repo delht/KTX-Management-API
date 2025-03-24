@@ -68,11 +68,21 @@ Route::get('/room/search', [RoomController::class, 'searchRoom']);
 
 // =================================================================================== Lấy số lượng phòng trống
 Route::get('/rooms/summary/{id_buildings}', [RoomController::class, 'getRoomSummaryByLocation']);
+
 // =================================================================================== Lấy thông tin dịch vụ theo phòng
 Route::get('/rooms/service/{id_rooms}', [RoomController::class, 'getServicesInRoom']);
+
 // =================================================================================== Lấy thông tin người dùng đã thuê
 Route::get('/users/{id_users}/rooms', [UserController::class, 'getRoom']);
 
+// =================================================================================== Lấy thông tin hợp đồng theo người dùng
+Route::get('/users/{id_users}/contracts', [ContractController::class, 'getContractByUser']);
+
+// =================================================================================== Gia hạn hợp đồng
+Route::post('/contracts/{id}/{newdate}', [ContractController::class, 'GiaHanContract']);
+
+// =================================================================================== Lấy thông tin hóa đơn thanh toán của người dùng
+Route::get('/users/{id_users}/payments', [PaymentController::class, 'getPaymentInvoices']);
 
 
 

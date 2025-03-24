@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -70,4 +71,32 @@ class ContractController extends Controller
 
         return response()->json(['message' => 'Xóa hợp đồng thành công'], Response::HTTP_OK);
     }
+
+
+    public function getContractByUser($id_users)
+    {
+        $id_users = DB::table('Users')
+            ->join('Contracts', 'Users.id_users', '=', 'Contracts.id_users')
+            ->join('Payments', 'Contracts.id_contracts', '=', 'Payments.id_contracts')
+            ->join('Rooms', 'Contracts.id_rooms', '=', 'Rooms.id_rooms')
+            ->select('Users.name', 'Users.phone', 'Rooms.number', 'Contracts.start_date', 'Contracts.end_date', 'Payments.amount', 'Payments.status', 'Payments.due_date')
+            ->where('Users.id_users', $id_users)
+            ->get();
+
+        return response()->json($id_users);
+
+    }
+
+    public function GiaHanContract($id_contracts, $new_end_date)
+    {
+        $contract = DB::table('contracts')
+            ->where('id_contracts', $id_contracts)
+            ->update(['end_date' => $new_end_date]);
+        if ($contract) {
+            return response()->json(['message' => 'Hợp đồng đã được gia hạn thành công']);
+        } else {
+            return response()->json(['message' => 'Lỗi khi gia hạn hợp đồng'], 500);
+        }
+    }
+
 }

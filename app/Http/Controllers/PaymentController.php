@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -69,5 +70,19 @@ class PaymentController extends Controller
         $payment->delete();
 
         return response()->json(['message' => 'Xóa thanh toán thành công'], Response::HTTP_OK);
+    }
+
+    public function getPaymentInvoices($id_users)
+    {
+        // Lấy thông tin các hóa đơn thanh toán của người dùng
+        $info = DB::table('Payments')
+            ->join('Contracts', 'Payments.id_contracts', '=', 'Contracts.id_contracts')
+            ->join('Rooms', 'Contracts.id_rooms', '=', 'Rooms.id_rooms')
+            ->join('Users', 'Contracts.id_users', '=', 'Users.id_users')
+            ->join('Payment_Details', 'Payments.id_payments', '=', 'Payment_Details.id_payments')
+            ->select('Users.name', 'Rooms.number', 'Payments.amount', 'Payments.due_date', 'Payments.status', 'Payment_Details.amountPay')
+            ->where('Users.id_users', $id_users)
+            ->get();
+        return response()->json($info);
     }
 }
