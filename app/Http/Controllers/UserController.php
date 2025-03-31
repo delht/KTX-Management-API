@@ -21,7 +21,7 @@ class UserController extends Controller
     }
 
     public function store(Request $request)
-    {   
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'email' => 'nullable|email|max:100|unique:Users,email',
@@ -32,18 +32,18 @@ class UserController extends Controller
             'email.unique' => 'Email này đã được sử dụng. Vui lòng chọn email khác!',
             'email.email' => 'Email không hợp lệ!',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Dữ liệu không hợp lệ!',
                 'errors' => $validator->errors(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        
+
         $validatedData = $validator->validated();
         $validatedData['password'] = Hash::make($validatedData['password']);
         $user = User::create($validatedData);
-        
+
         return response()->json($user, Response::HTTP_CREATED);
     }
 
@@ -116,7 +116,7 @@ class UserController extends Controller
     public function searchUser(Request $request)
     {
         $input = trim($request->input('gt')); // Lấy giá trị nhập vào từ param `q`
-        
+
         if (!$input) {
             return response()->json(['error' => 'Vui lòng nhập từ khóa tìm kiếm'], 400);
         }
@@ -135,6 +135,42 @@ class UserController extends Controller
     }
 
 
+    // ============================================================================= hiện thông tin phòng đã thuê
+    public function getRoom($id_users)
+    {
+        $rooms = DB::table('Users')
+            ->join('contracts', 'Users.id_users', '=', 'Contracts.id_users')
+            ->join('Rooms', 'Contracts.id_rooms', '=', 'Rooms.id_rooms')
+            ->leftJoin('Change_Rooms', 'Contracts.id_contracts', '=', 'Change_Rooms.id_contracts')
+            ->leftJoin('Rooms as old_room', 'Change_Rooms.old_room_id', '=', 'old_room.id_rooms')
+            ->leftJoin('Rooms as new_room', 'Change_Rooms.new_room_id', '=', 'new_room.id_rooms')
+            ->where('Users.id_users', $id_users)
+            ->select(
+                'Users.name',
+                'Rooms.number as current_room_number',
+                'Rooms.type',
+                'Rooms.price',
+                'Contracts.start_date',
+                'Contracts.end_date',
+                'old_room.number as phong_cu',
+                'new_room.number as phong_moi',
+                'Change_Rooms.reason',
+                'Change_Rooms.status'
 
-    
+            )
+            ->get();
+
+        if ($rooms->isEmpty()) {
+            return response()->json(['message' => 'Không tìm thấy thông tin phòng'], 404);
+        }
+
+        return response()->json($rooms);
+    }
+
+
+
+
+
+
+
 }

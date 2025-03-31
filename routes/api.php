@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentDetailController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChangeRoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,8 @@ Route::apiResource('services', ServiceController::class);
 
 Route::apiResource('users', UserController::class);
 
+Route::apiResource('changerooms', ChangeRoomController::class);
+
 // ============================================================================ Đăng nhập, tạo tài khoản
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -63,4 +66,23 @@ Route::get('/room/{id}/users', [RoomController::class, 'getUsersInRoom']);
 Route::get('/user/search', [UserController::class, 'searchUser']);
 Route::get('/room/search', [RoomController::class, 'searchRoom']);
 
-// ===================================================================================
+// =================================================================================== Lấy số lượng phòng trống
+Route::get('/rooms/summary/{id_buildings}', [RoomController::class, 'getRoomSummaryByLocation']);
+
+// =================================================================================== Lấy thông tin dịch vụ theo phòng
+Route::get('/rooms/service/{id_rooms}', [RoomController::class, 'getServicesInRoom']);
+
+// =================================================================================== Lấy thông tin người dùng đã thuê
+Route::get('/users/{id_users}/rooms', [UserController::class, 'getRoom']);
+
+// =================================================================================== Lấy thông tin hợp đồng theo người dùng
+Route::get('/users/{id_users}/contracts', [ContractController::class, 'getContractByUser']);
+
+// =================================================================================== Gia hạn hợp đồng
+Route::post('/contracts/{id}/{newdate}', [ContractController::class, 'GiaHanContract']);
+
+// =================================================================================== Lấy thông tin hóa đơn thanh toán của người dùng
+Route::get('/users/{id_users}/payments', [PaymentController::class, 'getPaymentInvoices']);
+
+
+
