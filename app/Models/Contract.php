@@ -11,12 +11,16 @@ class Contract extends Model
 
     protected $table = 'Contracts';
 
-    protected $primaryKey = 'id_buildings';
+    protected $primaryKey = 'id_contracts';
     public $incrementing = true;
     protected $keyType = 'int';
     public $timestamps = false;
 
     protected $fillable = [
-        'id_users', 'id_users', 'id_rooms', 'start_date', 'end_date'
+
+        'id_users',
+        'id_rooms',
+        'start_date',
+        'end_date'
     ];
 }
