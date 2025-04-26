@@ -47,11 +47,13 @@ Route::apiResource('changerooms', ChangeRoomController::class);
 
 // ============================================================================ Đăng nhập, tạo tài khoản
 
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/get-token-user', [AuthController::class, 'userInfo']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
 });
 
 Route::post('/users/import', [UserController::class, 'import']);
@@ -83,6 +85,3 @@ Route::post('/contracts/{id}/{newdate}', [ContractController::class, 'GiaHanCont
 
 // =================================================================================== Lấy thông tin hóa đơn thanh toán của người dùng
 Route::get('/users/{id_users}/payments', [PaymentController::class, 'getPaymentInvoices']);
-
-
-

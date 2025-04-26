@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
-use DB;
+// use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+
 
 class ContractController extends Controller
 {

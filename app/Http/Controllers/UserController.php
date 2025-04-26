@@ -15,11 +15,13 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    ///Lấy danh sách tất cả người dùng ============================
     public function index()
     {
         return response()->json(User::all(), Response::HTTP_OK);
     }
 
+    ///Thêm 1 user ================================================
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -47,6 +49,7 @@ class UserController extends Controller
         return response()->json($user, Response::HTTP_CREATED);
     }
 
+    ///Chi tiết 1 user theo id ====================================
     public function show(string $id)
     {
         $user = User::where('id_users', $id)->first();
@@ -58,6 +61,7 @@ class UserController extends Controller
         return response()->json($user, Response::HTTP_OK);
     }
 
+    ///Sửa thông tin user theo id =================================
     public function update(Request $request, string $id)
     {
         $user = User::where('id_users', $id)->first();
@@ -83,6 +87,7 @@ class UserController extends Controller
         return response()->json($user, Response::HTTP_OK);
     }
 
+    ///Xóa 1 người dùng theo id ===================================
     public function destroy(string $id)
     {
         $user = User::where('id_users', $id)->first();
@@ -96,7 +101,8 @@ class UserController extends Controller
         return response()->json(['message' => 'Xóa người dùng thành công'], Response::HTTP_OK);
     }
 
-    // ========================================================================
+    // ===================================================================================================
+    // ===================================================================================================
 
     public function import(Request $request)
     {
@@ -133,7 +139,6 @@ class UserController extends Controller
 
         return response()->json($users);
     }
-
 
     // ============================================================================= hiện thông tin phòng đã thuê
     public function getRoom($id_users)
