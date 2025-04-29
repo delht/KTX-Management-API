@@ -104,19 +104,37 @@ class UserController extends Controller
     // ===================================================================================================
     // ===================================================================================================
 
+
+
+
+
+
+    
+
     public function import(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,xls'
         ]);
-
-        Excel::import(new UsersImport, $request->file('file'));
-
+    
+        $import = new UsersImport();
+        Excel::import($import, $request->file('file'));
+    
+        $count = $import->LaySoLuong();
+    
         return response()->json([
-            'message' => 'Thêm thành công'
+            'message' => "Thêm {$count} người",
         ], Response::HTTP_OK);
     }
 
+
+
+
+
+
+
+
+    
     // =============================================================================
 
     public function searchUser(Request $request)
